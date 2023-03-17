@@ -80,3 +80,9 @@ project(":core") {
 
     }
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'cs.eng1.piazzapanic.DesktopLauncher'
+    }
+}
