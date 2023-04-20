@@ -1,10 +1,6 @@
 package cs.eng1.piazzapanic.ui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,7 +21,6 @@ import com.badlogic.gdx.utils.Scaling;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.Chef;
 import cs.eng1.piazzapanic.chef.ChefManager;
-import cs.eng1.piazzapanic.food.CustomerManager;
 import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.recipes.Recipe;
 import cs.eng1.piazzapanic.screens.GameScreen;
@@ -34,7 +29,10 @@ import cs.eng1.piazzapanic.stations.BakingStation;
 import cs.eng1.piazzapanic.stations.ChoppingStation;
 import cs.eng1.piazzapanic.stations.CookingStation;
 import cs.eng1.piazzapanic.ui.ButtonManager.ButtonColour;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+/** UI overlay class **/
 public class UIOverlay {
 
   private final Image pointer;
@@ -73,15 +71,19 @@ public class UIOverlay {
     this.game = game;
     // Initialize the money button
     LabelStyle moneyStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
-    moneyStyle.background = new TextureRegionDrawable(new Texture(
-        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
+    moneyStyle.background =
+        new TextureRegionDrawable(
+            new Texture(
+                "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
     money = new Money(moneyStyle);
     money.setAlignment(Align.bottom);
 
     // Initialize the money button
     LabelStyle livesStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
-    livesStyle.background = new TextureRegionDrawable(new Texture(
-        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
+    livesStyle.background =
+        new TextureRegionDrawable(
+            new Texture(
+                "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
     lives = new Lives(livesStyle);
     lives.setAlignment(Align.bottom);
 
@@ -92,22 +94,27 @@ public class UIOverlay {
     uiStage.addActor(table);
 
     // Initialise pointer image
-    pointer = new Image(
-        new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_sliderDown.png"));
+    pointer =
+        new Image(
+            new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/blue_sliderDown.png"));
     pointer.setScaling(Scaling.none);
 
     // Initialize UI for showing current chef
     chefDisplay = new Stack();
-    chefDisplay.add(new Image(new Texture(
-        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png")));
+    chefDisplay.add(
+        new Image(
+            new Texture(
+                "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png")));
     chefImage = new Image();
     chefImage.setScaling(Scaling.fit);
     chefDisplay.add(chefImage);
 
     // Initialize UI for showing current chef's ingredient stack
     Stack ingredientStackDisplay = new Stack();
-    ingredientImagesBG = new Image(new Texture(
-        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png"));
+    ingredientImagesBG =
+        new Image(
+            new Texture(
+                "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png"));
     ingredientImagesBG.setVisible(false);
     ingredientStackDisplay.add(ingredientImagesBG);
     ingredientImages = new VerticalGroup();
@@ -116,181 +123,230 @@ public class UIOverlay {
 
     // Initialize the timer
     LabelStyle timerStyle = new Label.LabelStyle(game.getFontManager().getTitleFont(), null);
-    timerStyle.background = new TextureRegionDrawable(new Texture(
-        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
+    timerStyle.background =
+        new TextureRegionDrawable(
+            new Texture(
+                "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/green_button_gradient_down.png"));
     timer = new Timer(timerStyle);
     timer.setAlignment(Align.center);
 
     // Initialize the home button
-    ImageButton homeButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-        new Texture(
-            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
-        ButtonManager.ButtonColour.BLUE, -1.5f);
+    ImageButton homeButton =
+        game.getButtonManager()
+            .createImageButton(
+                new TextureRegionDrawable(
+                    new Texture(
+                        Gdx.files.internal(
+                            "Kenney-Game-Assets-1/2D assets/Game Icons/PNG/White/1x/home.png"))),
+                ButtonManager.ButtonColour.BLUE,
+                -1.5f);
 
-    homeButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        game.loadHomeScreen();
-      }
-    });
+    homeButton.addListener(
+        new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+            game.loadHomeScreen();
+          }
+        });
 
-    final ImageButton buyButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-        new Texture(
-            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/shoppingBasket.png"))),
-        ButtonManager.ButtonColour.BLUE, -1.5f);
+    final ImageButton buyButton =
+        game.getButtonManager()
+            .createImageButton(
+                new TextureRegionDrawable(
+                    new Texture(
+                        Gdx.files.internal(
+                            "Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/shoppingBasket.png"))),
+                ButtonManager.ButtonColour.BLUE,
+                -1.5f);
 
-    buyButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        if (money.getMoney() > 0 && buyClicked == false) {
-          money.takeMoney(1);
-          ChefManager.chefs.get(3).isLocked = false;
-          buyClicked = true;
-
-        }
-
-      }
-    });
+    buyButton.addListener(
+        new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+            if (money.getMoney() > 0 && buyClicked == false) {
+              money.takeMoney(1);
+              ChefManager.chefs.get(3).isLocked = false;
+              buyClicked = true;
+            }
+          }
+        });
     buyButton.setPosition(200, 490);
     buyButton.setSize(40, 40);
 
-    final ImageButton speedButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-        new Texture(
-            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/arrowUp.png"))),
-        ButtonManager.ButtonColour.BLUE, -1.5f);
-    speedButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        if (money.getMoney() > 0 && speedClicked == false) {
-          money.takeMoney(1);
-          GameScreen.speedClick = true;
-          speedClicked = true;
-          for (int i = 0; i < ChefManager.chefs.size(); i++) {
-            ChefManager.chefs.get(i).speed = 6f;
+    final ImageButton speedButton =
+        game.getButtonManager()
+            .createImageButton(
+                new TextureRegionDrawable(
+                    new Texture(
+                        Gdx.files.internal(
+                            "Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/arrowUp.png"))),
+                ButtonManager.ButtonColour.BLUE,
+                -1.5f);
+    speedButton.addListener(
+        new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+            if (money.getMoney() > 0 && speedClicked == false) {
+              money.takeMoney(1);
+              GameScreen.speedClick = true;
+              speedClicked = true;
+              for (int i = 0; i < ChefManager.chefs.size(); i++) {
+                ChefManager.chefs.get(i).speed = 6f;
+              }
+            }
           }
-
-        }
-      }
-    });
+        });
     speedButton.setPosition(75, 100);
     speedButton.setSize(40, 40);
 
-    final ImageButton lifeButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-        new Texture(
-            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/heart.png"))),
-        ButtonManager.ButtonColour.BLUE, -1.5f);
-    lifeButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        if (money.getMoney() > 0 && lifeClicked == false) {
-          money.takeMoney(1);
-          lives.addLives();
-          lifeClicked = true;
-        }
-      }
-    });
+    final ImageButton lifeButton =
+        game.getButtonManager()
+            .createImageButton(
+                new TextureRegionDrawable(
+                    new Texture(
+                        Gdx.files.internal(
+                            "Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/heart.png"))),
+                ButtonManager.ButtonColour.BLUE,
+                -1.5f);
+    lifeButton.addListener(
+        new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+            if (money.getMoney() > 0 && lifeClicked == false) {
+              money.takeMoney(1);
+              lives.addLives();
+              lifeClicked = true;
+            }
+          }
+        });
     lifeButton.setPosition(75, 50);
     lifeButton.setSize(40, 40);
 
-    final ImageButton cookButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-        new Texture(
-            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/wrench.png"))),
-        ButtonManager.ButtonColour.BLUE, -1.5f);
-    cookButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        if (money.getMoney() > 0 && cookClicked == false) {
-          money.takeMoney(1);
-          cookClicked = true;
-          GameScreen.cookClick = true;
+    final ImageButton cookButton =
+        game.getButtonManager()
+            .createImageButton(
+                new TextureRegionDrawable(
+                    new Texture(
+                        Gdx.files.internal(
+                            "Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/wrench.png"))),
+                ButtonManager.ButtonColour.BLUE,
+                -1.5f);
+    cookButton.addListener(
+        new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+            if (money.getMoney() > 0 && cookClicked == false) {
+              money.takeMoney(1);
+              cookClicked = true;
+              GameScreen.cookClick = true;
 
-          BakingStation.totalTimeToCook = 5f;
-          CookingStation.totalTimeToCook = 5f;
-        }
-      }
-    });
+              BakingStation.totalTimeToCook = 5f;
+              CookingStation.totalTimeToCook = 5f;
+            }
+          }
+        });
     cookButton.setPosition(30, 50);
     cookButton.setSize(40, 40);
 
-    final ImageButton chopButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-        new Texture(
-            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/knife.png"))),
-        ButtonManager.ButtonColour.BLUE, -1.5f);
-    chopButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        if (money.getMoney() > 0 && chopClicked == false) {
-          money.takeMoney(1);
-          chopClicked = true;
-          GameScreen.chopClick = true;
+    final ImageButton chopButton =
+        game.getButtonManager()
+            .createImageButton(
+                new TextureRegionDrawable(
+                    new Texture(
+                        Gdx.files.internal(
+                            "Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/knife.png"))),
+                ButtonManager.ButtonColour.BLUE,
+                -1.5f);
+    chopButton.addListener(
+        new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+            if (money.getMoney() > 0 && chopClicked == false) {
+              money.takeMoney(1);
+              chopClicked = true;
+              GameScreen.chopClick = true;
 
-          ChoppingStation.totalTimeToChop = 2f;
-        }
-      }
-    });
+              ChoppingStation.totalTimeToChop = 2f;
+            }
+          }
+        });
     chopButton.setPosition(30, 100);
     chopButton.setSize(40, 40);
 
-    final ImageButton burnButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-        new Texture(
-            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/warning.png"))),
-        ButtonManager.ButtonColour.BLUE, -1.5f);
-    burnButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        if (money.getMoney() > 0 && burnClicked == false) {
-          money.takeMoney(1);
-          burnClicked = true;
-          GameScreen.burnClick = true;
-          CookingStation.totalTimeToBurn = 45f;
-          BakingStation.totalTimeToBurn = 25f;
-
-        }
-      }
-    });
+    final ImageButton burnButton =
+        game.getButtonManager()
+            .createImageButton(
+                new TextureRegionDrawable(
+                    new Texture(
+                        Gdx.files.internal(
+                            "Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/warning.png"))),
+                ButtonManager.ButtonColour.BLUE,
+                -1.5f);
+    burnButton.addListener(
+        new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+            if (money.getMoney() > 0 && burnClicked == false) {
+              money.takeMoney(1);
+              burnClicked = true;
+              GameScreen.burnClick = true;
+              CookingStation.totalTimeToBurn = 45f;
+              BakingStation.totalTimeToBurn = 25f;
+            }
+          }
+        });
     burnButton.setPosition(30, 150);
     burnButton.setSize(40, 40);
 
-    final ImageButton saveButton = game.getButtonManager().createImageButton(new TextureRegionDrawable(
-        new Texture(
-            Gdx.files.internal("Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/import.png"))),
-        ButtonManager.ButtonColour.BLUE, -1.5f);
-    saveButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
+    final ImageButton saveButton =
+        game.getButtonManager()
+            .createImageButton(
+                new TextureRegionDrawable(
+                    new Texture(
+                        Gdx.files.internal(
+                            "Kenney-Game-Assets-1/2D assets/Game Icons/PNG/Black/2x/import.png"))),
+                ButtonManager.ButtonColour.BLUE,
+                -1.5f);
+    saveButton.addListener(
+        new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
 
-        prefs.putFloat("chef1x", ChefManager.chefs.get(0).getX());
-        prefs.putFloat("chef2x", ChefManager.chefs.get(1).getX());
-        prefs.putFloat("chef3x", ChefManager.chefs.get(2).getX());
-        prefs.putFloat("chef4x", ChefManager.chefs.get(3).getX());
-        prefs.putFloat("chef1y", ChefManager.chefs.get(0).getY());
-        prefs.putFloat("chef2y", ChefManager.chefs.get(1).getY());
-        prefs.putFloat("chef3y", ChefManager.chefs.get(2).getY());
-        prefs.putFloat("chef4y", ChefManager.chefs.get(3).getY());
-        prefs.putInteger("difficulty", HomeScreen.difficulty);
-        prefs.putInteger("mode", HomeScreen.mode);
-        prefs.putInteger("lives", (int) UIOverlay.lives.getLives());
-        prefs.putInteger("money", (int) UIOverlay.money.getMoney());
-        prefs.putFloat("timer", timer.getTime());
-        prefs.putBoolean("buyClicked", buyClicked);
-        prefs.putBoolean("lifeClicked", lifeClicked);
-        prefs.putBoolean("speedClicked", speedClicked);
-        prefs.putBoolean("cookClicked", cookClicked);
-        prefs.putBoolean("chopClicked", chopClicked);
-        prefs.putFloat("speedTime", GameScreen.speedTime);
-        prefs.flush();
-      }
-    });
+            prefs.putFloat("chef1x", ChefManager.chefs.get(0).getX());
+            prefs.putFloat("chef2x", ChefManager.chefs.get(1).getX());
+            prefs.putFloat("chef3x", ChefManager.chefs.get(2).getX());
+            prefs.putFloat("chef4x", ChefManager.chefs.get(3).getX());
+            prefs.putFloat("chef1y", ChefManager.chefs.get(0).getY());
+            prefs.putFloat("chef2y", ChefManager.chefs.get(1).getY());
+            prefs.putFloat("chef3y", ChefManager.chefs.get(2).getY());
+            prefs.putFloat("chef4y", ChefManager.chefs.get(3).getY());
+            prefs.putInteger("difficulty", HomeScreen.difficulty);
+            prefs.putInteger("mode", HomeScreen.mode);
+            prefs.putInteger("lives", (int) UIOverlay.lives.getLives());
+            prefs.putInteger("money", (int) UIOverlay.money.getMoney());
+            prefs.putFloat("timer", timer.getTime());
+            prefs.putBoolean("buyClicked", buyClicked);
+            prefs.putBoolean("lifeClicked", lifeClicked);
+            prefs.putBoolean("speedClicked", speedClicked);
+            prefs.putBoolean("cookClicked", cookClicked);
+            prefs.putBoolean("chopClicked", chopClicked);
+            prefs.putFloat("speedTime", GameScreen.speedTime);
+            prefs.flush();
+          }
+        });
     saveButton.setPosition(900, 200);
     saveButton.setSize(40, 40);
 
-    removeBtnDrawable = new TextureRegionDrawable(
-        new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
+    removeBtnDrawable =
+        new TextureRegionDrawable(
+            new Texture("Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_crossWhite.png"));
 
     // Initialize the UI to display the currently requested recipe
     Stack recipeDisplay = new Stack();
-    recipeImagesBG = new Image(new Texture(
-        "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png"));
+    recipeImagesBG =
+        new Image(
+            new Texture(
+                "Kenney-Game-Assets-1/2D assets/UI Base Pack/PNG/grey_button_square_gradient_down.png"));
     recipeImagesBG.setVisible(false);
     recipeDisplay.add(recipeImagesBG);
     recipeImages = new VerticalGroup();
@@ -342,9 +398,7 @@ public class UIOverlay {
     table.add(resultTimer).colspan(3);
   }
 
-  /**
-   * Reset values and UI to be in their default state.
-   */
+  /** Reset values and UI to be in their default state. */
   public void init() {
     if (HomeScreen.load == false) {
       timer.reset();
@@ -409,8 +463,7 @@ public class UIOverlay {
   }
 
   /**
-   * Show the image of the currently selected chef as well as have the stack of
-   * ingredients
+   * Show the image of the currently selected chef as well as have the stack of ingredients
    * currently held by the chef.
    *
    * @param chef The chef that is currently selected for which to show the UI.
@@ -433,23 +486,22 @@ public class UIOverlay {
       ingredientImages.addActor(image);
     }
     if (!chef.getStack().isEmpty()) {
-      ImageButton btn = game.getButtonManager().createImageButton(removeBtnDrawable,
-          ButtonColour.RED, -1.5f);
-      btn.addListener(new ClickListener() {
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-          chef.placeIngredient();
-        }
-      });
+      ImageButton btn =
+          game.getButtonManager().createImageButton(removeBtnDrawable, ButtonColour.RED, -1.5f);
+      btn.addListener(
+          new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+              chef.placeIngredient();
+            }
+          });
       ingredientImages.addActor(btn);
     }
     ingredientImagesBG.setVisible(!chef.getStack().isEmpty());
-
   }
 
   /**
-   * Show the label displaying that the game has finished along with the time it
-   * took to complete.
+   * Show the label displaying that the game has finished along with the time it took to complete.
    */
   public void finishGameUI() {
     resultLabel.setVisible(true);
@@ -466,8 +518,7 @@ public class UIOverlay {
   }
 
   /**
-   * Show the current requested recipe that the player needs to make, the
-   * ingredients for that, and
+   * Show the current requested recipe that the player needs to make, the ingredients for that, and
    * the number of remaining recipes.
    *
    * @param recipe The recipe to display the ingredients for.

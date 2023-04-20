@@ -1,8 +1,6 @@
 package cs.eng1.piazzapanic.food;
 
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer.Random;
 import com.badlogic.gdx.utils.Queue;
-
 import cs.eng1.piazzapanic.food.recipes.BakedPotato;
 import cs.eng1.piazzapanic.food.recipes.Burger;
 import cs.eng1.piazzapanic.food.recipes.Pizza;
@@ -12,11 +10,11 @@ import cs.eng1.piazzapanic.screens.GameScreen;
 import cs.eng1.piazzapanic.screens.HomeScreen;
 import cs.eng1.piazzapanic.stations.RecipeStation;
 import cs.eng1.piazzapanic.ui.UIOverlay;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/** Object that manages customers **/
 public class CustomerManager {
 
   private final Queue<Recipe> customerOrders;
@@ -26,6 +24,7 @@ public class CustomerManager {
   private final UIOverlay overlay;
   public static ArrayList<Integer> recipeIndices = new ArrayList<Integer>();
 
+  /** CustomerManager class initializer **/
   public CustomerManager(UIOverlay overlay) {
     this.overlay = overlay;
     this.recipeStations = new LinkedList<>();
@@ -35,12 +34,16 @@ public class CustomerManager {
   /**
    * Reset the scenario to the default scenario.
    *
-   * @param textureManager The manager of food textures that can be passed to the
-   *                       recipes
+   * @param textureManager The manager of food textures that can be passed to the recipes
    */
   public void init(FoodTextureManager textureManager) {
-    Recipe[] possibleRecipes = new Recipe[] { new Burger(textureManager), new Salad(textureManager),
-        new BakedPotato(textureManager), new Pizza(textureManager) };
+    Recipe[] possibleRecipes =
+        new Recipe[] {
+          new Burger(textureManager),
+          new Salad(textureManager),
+          new BakedPotato(textureManager),
+          new Pizza(textureManager)
+        };
 
     customerOrders.clear();
     recipeIndices.clear();
@@ -74,12 +77,10 @@ public class CustomerManager {
     }
 
     return recipe.getType().equals(currentOrder.getType());
-
   }
 
   /**
-   * Complete the current order nad move on to the next one. Then update the UI.
-   * If all the recipes
+   * Complete the current order nad move on to the next one. Then update the UI. If all the recipes
    * are completed, then show the winning UI.
    */
   public void nextRecipe(FoodTextureManager textureManager) {
@@ -89,8 +90,13 @@ public class CustomerManager {
 
         recipeIndices.clear();
         customerOrders.clear();
-        Recipe[] possibleRecipes1 = new Recipe[] { new Burger(textureManager), new Salad(textureManager),
-            new BakedPotato(textureManager), new Pizza(textureManager) };
+        Recipe[] possibleRecipes1 =
+            new Recipe[] {
+              new Burger(textureManager),
+              new Salad(textureManager),
+              new BakedPotato(textureManager),
+              new Pizza(textureManager)
+            };
         for (int j = 0; j < 1; j++) {
           recipeIndices.add((int) (Math.random() * ((4))));
         }
@@ -110,13 +116,11 @@ public class CustomerManager {
         UIOverlay.lives.takeLives();
         if (UIOverlay.lives.getLives() == 0) {
           overlay.loseGameUI();
-
         }
       }
       GameScreen.customerTime = 0;
       overlay.updateRecipeCounter(customerOrders.size);
       currentOrder = customerOrders.removeFirst();
-
     }
     notifyRecipeStations();
     overlay.updateRecipeUI(currentOrder);
@@ -127,8 +131,7 @@ public class CustomerManager {
   }
 
   /**
-   * If one recipe station has been updated, let all the other ones know that
-   * there is a new recipe
+   * If one recipe station has been updated, let all the other ones know that there is a new recipe
    * to be built.
    */
   private void notifyRecipeStations() {

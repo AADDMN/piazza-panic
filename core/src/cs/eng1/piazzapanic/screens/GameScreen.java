@@ -18,27 +18,23 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.chef.ChefManager;
 import cs.eng1.piazzapanic.food.CustomerManager;
-import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.food.FoodTextureManager;
+import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.*;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
 import cs.eng1.piazzapanic.ui.UIOverlay;
-
 import java.util.HashMap;
 
 /**
- * The screen which can be used to load the tilemap and keep track of everything
- * happening in the
- * game. It does all the initialization and then lets each actor do its actions
- * based on the current
+ * The screen which can be used to load the tilemap and keep track of everything happening in the
+ * game. It does all the initialization and then lets each actor do its actions based on the current
  * frame.
  */
 public class GameScreen implements Screen {
@@ -95,31 +91,29 @@ public class GameScreen implements Screen {
     // Add tile objects
     initialiseStations(tileUnitSize, objectLayer);
     chefManager.addChefsToStage(stage);
-
   }
 
   /**
-   * @param tileUnitSize The ratio of world units over the pixel width of a single
-   *                     tile/station
-   * @param objectLayer  The layer on the TMX tilemap which contains all the
-   *                     information about the
-   *                     stations and station colliders including position, bounds
-   *                     and station
-   *                     capabilities.
+   * @param tileUnitSize The ratio of world units over the pixel width of a single tile/station
+   * @param objectLayer The layer on the TMX tilemap which contains all the information about the
+   *     stations and station colliders including position, bounds and station capabilities.
    */
   private void initialiseStations(float tileUnitSize, MapLayer objectLayer) {
-    Array<TiledMapTileMapObject> tileObjects = objectLayer.getObjects()
-        .getByType(TiledMapTileMapObject.class);
-    Array<RectangleMapObject> colliderObjects = objectLayer.getObjects()
-        .getByType(RectangleMapObject.class);
+    Array<TiledMapTileMapObject> tileObjects =
+        objectLayer.getObjects().getByType(TiledMapTileMapObject.class);
+    Array<RectangleMapObject> colliderObjects =
+        objectLayer.getObjects().getByType(RectangleMapObject.class);
     HashMap<Integer, StationCollider> colliders = new HashMap<>();
 
     for (RectangleMapObject colliderObject : new Array.ArrayIterator<>(colliderObjects)) {
       Integer id = colliderObject.getProperties().get("id", Integer.class);
       StationCollider collider = new StationCollider(chefManager);
       Rectangle bounds = colliderObject.getRectangle();
-      collider.setBounds(bounds.getX() * tileUnitSize, bounds.getY() * tileUnitSize,
-          bounds.getWidth() * tileUnitSize, bounds.getHeight() * tileUnitSize);
+      collider.setBounds(
+          bounds.getX() * tileUnitSize,
+          bounds.getY() * tileUnitSize,
+          bounds.getWidth() * tileUnitSize,
+          bounds.getHeight() * tileUnitSize);
       stage.addActor(collider);
       colliders.put(id, collider);
     }
@@ -134,37 +128,67 @@ public class GameScreen implements Screen {
       Station station;
       int id = tileObject.getProperties().get("id", Integer.class);
       String ingredients = tileObject.getProperties().get("ingredients", String.class);
-      StationActionUI.ActionAlignment alignment = StationActionUI.ActionAlignment.valueOf(
-          tileObject.getProperties().get("actionAlignment", "TOP", String.class));
+      StationActionUI.ActionAlignment alignment =
+          StationActionUI.ActionAlignment.valueOf(
+              tileObject.getProperties().get("actionAlignment", "TOP", String.class));
 
       // Initialize specific station types
       switch (tileObject.getProperties().get("stationType", String.class)) {
         case "cookingStation":
           locked1 = tileObject.getProperties().get("locked", String.class);
           locked2 = Boolean.parseBoolean(locked1);
-          station = new CookingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager), locked2);
+          station =
+              new CookingStation(
+                  id,
+                  tileObject.getTextureRegion(),
+                  stationUIController,
+                  alignment,
+                  Ingredient.arrayFromString(ingredients, foodTextureManager),
+                  locked2);
           break;
         case "bakingStation":
           locked1 = tileObject.getProperties().get("locked", String.class);
           locked2 = Boolean.parseBoolean(locked1);
-          station = new BakingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager), locked2);
+          station =
+              new BakingStation(
+                  id,
+                  tileObject.getTextureRegion(),
+                  stationUIController,
+                  alignment,
+                  Ingredient.arrayFromString(ingredients, foodTextureManager),
+                  locked2);
 
           break;
         case "ingredientStation":
-          station = new IngredientStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.fromString(ingredients, foodTextureManager));
+          station =
+              new IngredientStation(
+                  id,
+                  tileObject.getTextureRegion(),
+                  stationUIController,
+                  alignment,
+                  Ingredient.fromString(ingredients, foodTextureManager));
           break;
         case "choppingStation":
           locked1 = tileObject.getProperties().get("locked", String.class);
           locked2 = Boolean.parseBoolean(locked1);
-          station = new ChoppingStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, Ingredient.arrayFromString(ingredients, foodTextureManager), locked2);
+          station =
+              new ChoppingStation(
+                  id,
+                  tileObject.getTextureRegion(),
+                  stationUIController,
+                  alignment,
+                  Ingredient.arrayFromString(ingredients, foodTextureManager),
+                  locked2);
           break;
         case "recipeStation":
-          station = new RecipeStation(id, tileObject.getTextureRegion(), stationUIController,
-              alignment, foodTextureManager, customerManager);
+          station =
+              new RecipeStation(
+                  id,
+                  tileObject.getTextureRegion(),
+                  stationUIController,
+                  alignment,
+                  foodTextureManager,
+                  customerManager);
           customerManager.addRecipeStation((RecipeStation) station);
           break;
         default:
@@ -202,7 +226,6 @@ public class GameScreen implements Screen {
         } catch (NumberFormatException e) {
           System.out.println("Error parsing collider ID: " + e.getMessage());
         }
-
       }
     }
   }
@@ -245,20 +268,16 @@ public class GameScreen implements Screen {
     customerTime += delta;
     if (speedClick) {
       speedTime += delta;
-
     }
 
     if (chopClick) {
       chopTime += delta;
-
     }
     if (burnClick) {
       burnTime += delta;
-
     }
     if (cookClick) {
       cookTime += delta;
-
     }
 
     if (speedTime > 10f) {
@@ -291,19 +310,13 @@ public class GameScreen implements Screen {
   }
 
   @Override
-  public void pause() {
-
-  }
+  public void pause() {}
 
   @Override
-  public void resume() {
-
-  }
+  public void resume() {}
 
   @Override
-  public void hide() {
-
-  }
+  public void hide() {}
 
   @Override
   public void dispose() {

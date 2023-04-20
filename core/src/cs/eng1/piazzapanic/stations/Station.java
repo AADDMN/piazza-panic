@@ -12,7 +12,6 @@ import cs.eng1.piazzapanic.observable.Observer;
 import cs.eng1.piazzapanic.observable.Subject;
 import cs.eng1.piazzapanic.ui.StationActionUI;
 import cs.eng1.piazzapanic.ui.StationUIController;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +27,10 @@ public class Station extends Actor implements Observer<Chef> {
   protected Chef nearbyChef = null;
   private float imageRotation = 0.0f;
 
-  public Station(int id, TextureRegion image, StationUIController uiController,
+  public Station(
+      int id,
+      TextureRegion image,
+      StationUIController uiController,
       StationActionUI.ActionAlignment alignment) {
     this.id = id;
     stationImage = image; // Texture of the object
@@ -36,9 +38,7 @@ public class Station extends Actor implements Observer<Chef> {
     this.uiController = uiController;
   }
 
-  /**
-   * Reset the station values to be the default.
-   */
+  /** Reset the station values to be the default. */
   public void reset() {
     uiController.hideActions(this);
     uiController.hideProgressBar(this);
@@ -50,15 +50,14 @@ public class Station extends Actor implements Observer<Chef> {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    batch.draw(stationImage, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1f, 1f,
-        imageRotation);
+    batch.draw(
+        stationImage, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1f, 1f, imageRotation);
   }
 
   /**
-   * Take a food texture and render it on top of the station at a smaller size
-   * than the station.
+   * Take a food texture and render it on top of the station at a smaller size than the station.
    *
-   * @param batch       the sprite batch to draw rectangles to the screen.
+   * @param batch the sprite batch to draw rectangles to the screen.
    * @param foodTexture the texture to be drawn onto the screen.
    */
   protected void drawFoodTexture(Batch batch, Texture foodTexture) {
@@ -66,10 +65,8 @@ public class Station extends Actor implements Observer<Chef> {
   }
 
   /**
-   * Draw the outline of the shape of the station as a rectangle and draw a blue
-   * line from the
-   * centre of this station (which is an Observer) to the centre of the
-   * stationCollider that it is
+   * Draw the outline of the shape of the station as a rectangle and draw a blue line from the
+   * centre of this station (which is an Observer) to the centre of the stationCollider that it is
    * linked to (the Subject that this is registered to).
    *
    * @param shapes The renderer to use to draw debugging information
@@ -94,8 +91,10 @@ public class Station extends Actor implements Observer<Chef> {
       if (chefSubject instanceof Actor) {
         Actor collider = (Actor) chefSubject;
         Vector2 start = new Vector2(getX() + getWidth() / 2f, getY() + getHeight() / 2f);
-        Vector2 end = new Vector2(collider.getX() + collider.getWidth() / 2f,
-            collider.getY() + collider.getHeight() / 2f);
+        Vector2 end =
+            new Vector2(
+                collider.getX() + collider.getWidth() / 2f,
+                collider.getY() + collider.getHeight() / 2f);
         shapes.line(start, end);
       }
     }
@@ -105,12 +104,10 @@ public class Station extends Actor implements Observer<Chef> {
   }
 
   /**
-   * Take the chef sent from the Subject and decide what interactions are
-   * possible.
+   * Take the chef sent from the Subject and decide what interactions are possible.
    *
-   * @param chef The chef that the station should interact with which is given
-   *             from the Subject to
-   *             this Observer.
+   * @param chef The chef that the station should interact with which is given from the Subject to
+   *     this Observer.
    */
   @Override
   public void update(Chef chef) {
@@ -160,27 +157,20 @@ public class Station extends Actor implements Observer<Chef> {
     return this.chefSubjects;
   }
 
-  /**
-   * @return the list of possible actions that this station based on the current
-   *         state
-   */
+  /** @return the list of possible actions that this station based on the current state */
   public List<StationAction.ActionType> getActionTypes() {
     return new LinkedList<>();
   }
 
   /**
-   * Given an action, the station should attempt to do that action based on the
-   * chef that is nearby
+   * Given an action, the station should attempt to do that action based on the chef that is nearby
    * or what ingredient(s) are currently on the station.
    *
    * @param action the action that needs to be done by this station if it can.
    */
-  public void doStationAction(StationAction.ActionType action) {
-  }
+  public void doStationAction(StationAction.ActionType action) {}
 
-  /**
-   * @return the direction in which the action buttons should be displayed.
-   */
+  /** @return the direction in which the action buttons should be displayed. */
   public StationActionUI.ActionAlignment getActionAlignment() {
     return actionAlignment;
   }

@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The Recipe class is the parent class of the food classes that
- * dictates what ingredients are needed to make them
+ * The Recipe class is the parent class of the food classes that dictates what ingredients are
+ * needed to make them
  */
 public class Recipe {
 
@@ -17,10 +17,9 @@ public class Recipe {
   /**
    * The constructor method for the class
    *
-   * @param type           The food object that inherits the class
-   * @param textureManager The controller from which we can get information on
-   *                       what texture
-   *                       each food object should have
+   * @param type The food object that inherits the class
+   * @param textureManager The controller from which we can get information on what texture each
+   *     food object should have
    */
   public Recipe(String type, FoodTextureManager textureManager) {
     this.type = type;
@@ -59,7 +58,6 @@ public class Recipe {
         ingredientTypes.add("dough_cooked");
         ingredientTypes.add("cheese");
         break;
-
     }
     return ingredientTypes;
   }

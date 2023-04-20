@@ -1,7 +1,6 @@
 package cs.eng1.piazzapanic.food.ingredients;
 
 import com.badlogic.gdx.graphics.Texture;
-
 import cs.eng1.piazzapanic.food.FoodTextureManager;
 
 public class Ingredient {
@@ -20,26 +19,20 @@ public class Ingredient {
   @Override
   public String toString() {
     String output = getType() + "_";
-    if (isChopped)
-      output += "chopped";
-    else if (isCooked)
-      output += "cooked";
-    else if (isBurned)
-      output += "burned";
-    else
-      output += "raw";
+    if (isChopped) output += "chopped";
+    else if (isCooked) output += "cooked";
+    else if (isBurned) output += "burned";
+    else output += "raw";
     return output;
   }
 
   /**
    * Initialize an Ingredient based on a string name
    *
-   * @param ingredientName the name of the ingredient which can be defined from
-   *                       Tiled
+   * @param ingredientName the name of the ingredient which can be defined from Tiled
    * @return the Ingredient of the type defined by the input
    */
-  public static Ingredient fromString(String ingredientName,
-      FoodTextureManager textureManager) {
+  public static Ingredient fromString(String ingredientName, FoodTextureManager textureManager) {
     switch (ingredientName) {
       case "patty":
         return new Patty(textureManager);
@@ -63,13 +56,12 @@ public class Ingredient {
   /**
    * Initialize an array of ingredients based on the input string.
    *
-   * @param csvIngredientNames A string containing a list of ingredient names
-   *                           seperated by commas
-   *                           with no whitespace as defined in Tiled
+   * @param csvIngredientNames A string containing a list of ingredient names seperated by commas
+   *     with no whitespace as defined in Tiled
    * @return An array of Ingredient based on the input string
    */
-  public static Ingredient[] arrayFromString(String csvIngredientNames,
-      FoodTextureManager textureManager) {
+  public static Ingredient[] arrayFromString(
+      String csvIngredientNames, FoodTextureManager textureManager) {
     String[] ingredientNames = csvIngredientNames.split(",");
     Ingredient[] ingredients = new Ingredient[ingredientNames.length];
     for (int i = 0; i < ingredientNames.length; i++) {

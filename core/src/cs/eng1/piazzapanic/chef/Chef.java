@@ -13,19 +13,17 @@ import cs.eng1.piazzapanic.food.ingredients.Ingredient;
 import cs.eng1.piazzapanic.stations.Station;
 
 /**
- * The Chef class is an actor representing a chef in the kitchen. It can pick up
- * and put down
+ * The Chef class is an actor representing a chef in the kitchen. It can pick up and put down
  * ingredients and interact with stations.
  */
 public class Chef extends Actor implements Disposable {
 
   /**
-   * image, imageBounds and imageRotation are all used to display the chef to the
-   * user and show the
-   * user where the chef is and what direction it is moving without changing any
-   * collision details.
+   * image, imageBounds and imageRotation are all used to display the chef to the user and show the
+   * user where the chef is and what direction it is moving without changing any collision details.
    */
   private final Texture image;
+
   private final Vector2 imageBounds;
   private float imageRotation = 0f;
 
@@ -36,23 +34,22 @@ public class Chef extends Actor implements Disposable {
   public float speed = 3f;
   public boolean isLocked = false;
   /**
-   * a parameter which adds a small amount of distance between the chef's
-   * boundaries and any other
-   * objects it can collide with. This helps avoid boundary errors in collision
-   * calculations
+   * a parameter which adds a small amount of distance between the chef's boundaries and any other
+   * objects it can collide with. This helps avoid boundary errors in collision calculations.
    */
   private final float collisionSkin = 0.01f;
+
   private boolean inputEnabled = true;
   private boolean paused = false;
 
   /**
-   * @param image       the texture to display to the user
-   * @param imageBounds the bounds of the texture independent of the chef's own
-   *                    bounds to use for
-   *                    drawing the image to scale.
-   * @param chefManager the controller from which we can get information about all
-   *                    the chefs and
-   *                    their surrounding environment
+   * Chef class initializer.
+   *
+   * @param image the texture to display to the user
+   * @param imageBounds the bounds of the texture independent of the chef's own bounds to use for
+   *     drawing the image to scale.
+   * @param chefManager the controller from which we can get information about all the chefs and
+   *     their surrounding environment
    */
   public Chef(Texture image, Vector2 imageBounds, ChefManager chefManager) {
     this.image = image;
@@ -61,6 +58,7 @@ public class Chef extends Actor implements Disposable {
     inputVector = new Vector2();
   }
 
+  /** initialise the chef's position, rotation and stack. **/
   public void init(float x, float y) {
     setX(x);
     setY(y);
@@ -70,14 +68,42 @@ public class Chef extends Actor implements Disposable {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    batch.draw(image, getX() + (1 - imageBounds.x) / 2f, getY() + (1 - imageBounds.y) / 2f,
-        imageBounds.x / 2f, imageBounds.y / 2f, imageBounds.x,
-        imageBounds.y, 1f, 1f, imageRotation, 0, 0, image.getWidth(), image.getHeight(), false,
+    batch.draw(
+        image,
+        getX() + (1 - imageBounds.x) / 2f,
+        getY() + (1 - imageBounds.y) / 2f,
+        imageBounds.x / 2f,
+        imageBounds.y / 2f,
+        imageBounds.x,
+        imageBounds.y,
+        1f,
+        1f,
+        imageRotation,
+        0,
+        0,
+        image.getWidth(),
+        image.getHeight(),
+        false,
         false);
     for (Ingredient ingredient : ingredientStack) {
       Texture texture = ingredient.getTexture();
-      batch.draw(texture, getX() + 0.5f, getY() + 0.2f, 0f, 0.3f, 0.6f, 0.6f, 1f, 1f,
-          imageRotation, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+      batch.draw(
+          texture,
+          getX() + 0.5f,
+          getY() + 0.2f,
+          0f,
+          0.3f,
+          0.6f,
+          0.6f,
+          1f,
+          1f,
+          imageRotation,
+          0,
+          0,
+          texture.getWidth(),
+          texture.getHeight(),
+          false,
+          false);
     }
   }
 
@@ -93,9 +119,7 @@ public class Chef extends Actor implements Disposable {
     }
   }
 
-  /**
-   * Set the input vector based on the input keys for movement
-   */
+  /** Set the input vector based on the input keys for movement. */
   private void getInput() {
     inputVector.x = 0;
     inputVector.y = 0;
@@ -123,8 +147,7 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Calculate how far the chef should move based on the input vector while
-   * avoiding collisions
+   * Calculate how far the chef should move based on the input vector while avoiding collisions.
    *
    * @param delta the time that has passed since the last frame
    * @return the vector representing how far the chef should move
@@ -140,15 +163,13 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Check to see if a point lies within a tile in the collision layer, or if the
-   * point is in a chef
-   * or station
+   * Check to see if a point lies within a tile in the collision layer, or if the point is in a chef
+   * or station.
    *
    * @param x the x-coordinate to check for a collision
    * @param y the y-coordinate to check for a collision
-   * @return the bounding box of the object that the point lies within. It will be
-   *         null if the point
-   *         does not lie in any object
+   * @return the bounding box of the object that the point lies within. It will be null if the point
+   *     does not lie in any object
    */
   private Rectangle getCollisionObjectBoundaries(float x, float y) {
     Actor actorHit = getStage().hit(x, y, false);
@@ -159,74 +180,74 @@ public class Chef extends Actor implements Disposable {
       return new Rectangle((float) Math.floor(x), (float) Math.floor(y), 1, 1);
     } else if (actorHit instanceof Station || actorHit instanceof Chef) {
       // Return the bounds of the station or chef that the point lies within.
-      return new Rectangle(actorHit.getX(), actorHit.getY(), actorHit.getWidth(),
-          actorHit.getHeight());
+      return new Rectangle(
+          actorHit.getX(), actorHit.getY(), actorHit.getWidth(), actorHit.getHeight());
     } else {
       return null;
     }
   }
 
   /**
-   * @param xMovement the amount to move the chef along the x-axis before
-   *                  collision
-   * @return the new change in the x-axis that ensures that the chef does not
-   *         collide with any
-   *         objects
+   * Check for collisions and change the X movement to avoid the collision.
+   *
+   * @param horizontalMovement the amount to move the chef along the x-axis before collision
+   * @return the new change in the x-axis that ensures that the chef does not collide with any
+   *     objects
    */
-  private float adjustHorizontalMovementForCollision(float xMovement) {
-    if (xMovement > 0.0001f) {
+  private float adjustHorizontalMovementForCollision(float horizontalMovement) {
+    if (horizontalMovement > 0.0001f) {
       // Check right side of chef at top, middle and bottom
-      float rightBorder = getX() + getWidth() + xMovement;
+      float rightBorder = getX() + getWidth() + horizontalMovement;
       Rectangle hitBoundsBottom = getCollisionObjectBoundaries(rightBorder, getY());
-      Rectangle hitBoundsMiddle = getCollisionObjectBoundaries(rightBorder,
-          getY() + getHeight() / 2f);
+      Rectangle hitBoundsMiddle =
+          getCollisionObjectBoundaries(rightBorder, getY() + getHeight() / 2f);
       Rectangle hitBoundsTop = getCollisionObjectBoundaries(rightBorder, getY() + getHeight());
 
       // Calculate new change in x relative to the collision object boundaries
       float adjustment = -getWidth() - collisionSkin - getX();
       if (hitBoundsBottom != null) {
-        xMovement = hitBoundsBottom.x + adjustment;
+        horizontalMovement = hitBoundsBottom.x + adjustment;
       }
       if (hitBoundsMiddle != null) {
-        xMovement = Math.min(xMovement, hitBoundsMiddle.x + adjustment);
+        horizontalMovement = Math.min(horizontalMovement, hitBoundsMiddle.x + adjustment);
       }
       if (hitBoundsTop != null) {
-        xMovement = Math.min(xMovement, hitBoundsTop.x + adjustment);
+        horizontalMovement = Math.min(horizontalMovement, hitBoundsTop.x + adjustment);
       }
-    } else if (xMovement < -0.0001f) {
+    } else if (horizontalMovement < -0.0001f) {
       // Check left side of chef at top, middle and bottom
-      float leftBorder = getX() + xMovement;
+      float leftBorder = getX() + horizontalMovement;
       Rectangle hitBoundsBottom = getCollisionObjectBoundaries(leftBorder, getY());
-      Rectangle hitBoundsMiddle = getCollisionObjectBoundaries(leftBorder,
-          getY() + getHeight() / 2f);
+      Rectangle hitBoundsMiddle =
+          getCollisionObjectBoundaries(leftBorder, getY() + getHeight() / 2f);
       Rectangle hitBoundsTop = getCollisionObjectBoundaries(leftBorder, getY() + getHeight());
 
       // Calculate new change in x relative to the collision object boundaries
       float adjustment = collisionSkin - getX();
       if (hitBoundsBottom != null) {
-        xMovement = hitBoundsBottom.x + hitBoundsBottom.width + adjustment;
+        horizontalMovement = hitBoundsBottom.x + hitBoundsBottom.width + adjustment;
       }
       if (hitBoundsMiddle != null) {
-        xMovement = Math.max(xMovement, hitBoundsMiddle.x + hitBoundsMiddle.width + adjustment);
+        horizontalMovement = Math.max(horizontalMovement, hitBoundsMiddle.x + hitBoundsMiddle.width + adjustment);
       }
       if (hitBoundsTop != null) {
-        xMovement = Math.max(xMovement, hitBoundsTop.x + hitBoundsTop.width + adjustment);
+        horizontalMovement = Math.max(horizontalMovement, hitBoundsTop.x + hitBoundsTop.width + adjustment);
       }
     }
-    return xMovement;
+    return horizontalMovement;
   }
 
-  /**
-   * @param yMovement the amount to move the chef along the y-axis before
-   *                  collision
-   * @return the new change in the y-axis that ensures that the chef does not
-   *         collide with any
-   *         objects
+  /** 
+   * Check for collisions and adjust Y movement to avoid them.
+   *
+   * @param verticalMovement the amount to move the chef along the y-axis before collision
+   * @return the new change in the y-axis that ensures that the chef does not collide with any
+   *     objects
    */
-  private float adjustVerticalMovementForCollision(float yMovement) {
-    if (yMovement > 0.0001f) {
+  private float adjustVerticalMovementForCollision(float verticalMovement) {
+    if (verticalMovement > 0.0001f) {
       // Check top side of chef at left, middle and right
-      float topBorder = getY() + getHeight() + yMovement;
+      float topBorder = getY() + getHeight() + verticalMovement;
       Rectangle hitBoundsLeft = getCollisionObjectBoundaries(getX(), topBorder);
       Rectangle hitBoundsMiddle = getCollisionObjectBoundaries(getX() + getWidth() / 2f, topBorder);
       Rectangle hitBoundsRight = getCollisionObjectBoundaries(getX() + getWidth(), topBorder);
@@ -234,35 +255,35 @@ public class Chef extends Actor implements Disposable {
       // Calculate new change in y relative to the collision object boundaries
       float adjustment = -getHeight() - collisionSkin - getY();
       if (hitBoundsLeft != null) {
-        yMovement = Math.min(yMovement, hitBoundsLeft.y + adjustment);
+        verticalMovement = Math.min(verticalMovement, hitBoundsLeft.y + adjustment);
       }
       if (hitBoundsMiddle != null) {
-        yMovement = Math.min(yMovement, hitBoundsMiddle.y + adjustment);
+        verticalMovement = Math.min(verticalMovement, hitBoundsMiddle.y + adjustment);
       }
       if (hitBoundsRight != null) {
-        yMovement = Math.min(yMovement, hitBoundsRight.y + adjustment);
+        verticalMovement = Math.min(verticalMovement, hitBoundsRight.y + adjustment);
       }
-    } else if (yMovement < -0.0001f) {
+    } else if (verticalMovement < -0.0001f) {
       // Check bottom side of chef at left, middle and right
-      float bottomBorder = getY() + yMovement;
+      float bottomBorder = getY() + verticalMovement;
       Rectangle hitBoundsLeft = getCollisionObjectBoundaries(getX(), bottomBorder);
-      Rectangle hitBoundsMiddle = getCollisionObjectBoundaries(getX() + getWidth() / 2f,
-          bottomBorder);
+      Rectangle hitBoundsMiddle =
+          getCollisionObjectBoundaries(getX() + getWidth() / 2f, bottomBorder);
       Rectangle hitBoundsRight = getCollisionObjectBoundaries(getX() + getWidth(), bottomBorder);
 
       // Calculate new change in y relative to the collision object boundaries
       float adjustment = collisionSkin - getY();
       if (hitBoundsLeft != null) {
-        yMovement = Math.max(yMovement, hitBoundsLeft.y + hitBoundsLeft.height + adjustment);
+        verticalMovement = Math.max(verticalMovement, hitBoundsLeft.y + hitBoundsLeft.height + adjustment);
       }
       if (hitBoundsMiddle != null) {
-        yMovement = Math.max(yMovement, hitBoundsMiddle.y + hitBoundsMiddle.height + adjustment);
+        verticalMovement = Math.max(verticalMovement, hitBoundsMiddle.y + hitBoundsMiddle.height + adjustment);
       }
       if (hitBoundsRight != null) {
-        yMovement = Math.max(yMovement, hitBoundsRight.y + hitBoundsRight.height + adjustment);
+        verticalMovement = Math.max(verticalMovement, hitBoundsRight.y + hitBoundsRight.height + adjustment);
       }
     }
-    return yMovement;
+    return verticalMovement;
   }
 
   public boolean hasIngredient() {
@@ -279,7 +300,7 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Pops the top ingredient from the stack to place on the station
+   * Pops the top ingredient from the stack to place on the station.
    *
    * @return the ingredient that was popped from the stack.
    */
@@ -294,9 +315,8 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Sets the input vector based on x and y, but ensuring that the vector is never
-   * greater than a
-   * length of 1
+   * Sets the input vector based on x and y, but ensuring that the vector is never greater than a
+   * length of 1.
    *
    * @param x the x input value
    * @param y the y input value
@@ -330,8 +350,7 @@ public class Chef extends Actor implements Disposable {
   }
 
   /**
-   * Whenever the stack has items added or removed from it, notify the chef
-   * manager about the new
+   * Whenever the stack has items added or removed from it, notify the chef manager about the new
    * stack.
    */
   public void notifyAboutUpdatedStack() {

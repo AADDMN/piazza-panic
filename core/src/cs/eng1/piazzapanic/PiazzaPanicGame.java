@@ -3,11 +3,12 @@ package cs.eng1.piazzapanic;
 import com.badlogic.gdx.Game;
 import cs.eng1.piazzapanic.screens.GameScreen;
 import cs.eng1.piazzapanic.screens.HomeScreen;
-import cs.eng1.piazzapanic.ui.SettingsOverlay;
-import cs.eng1.piazzapanic.ui.TutorialOverlay;
 import cs.eng1.piazzapanic.ui.ButtonManager;
 import cs.eng1.piazzapanic.ui.FontManager;
+import cs.eng1.piazzapanic.ui.SettingsOverlay;
+import cs.eng1.piazzapanic.ui.TutorialOverlay;
 
+/** Game class. **/
 public class PiazzaPanicGame extends Game {
 
   private FontManager fontManager;
@@ -38,6 +39,7 @@ public class PiazzaPanicGame extends Game {
     buttonManager.dispose();
   }
 
+  /** Loads the home screen. **/
   public void loadHomeScreen() {
     if (homeScreen == null) {
       homeScreen = new HomeScreen(this);
@@ -45,6 +47,7 @@ public class PiazzaPanicGame extends Game {
     setScreen(homeScreen);
   }
 
+  /** Loads the game screen. **/
   public void loadGameScreen() {
     if (gameScreen == null) {
       gameScreen = new GameScreen(this);

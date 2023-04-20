@@ -5,35 +5,35 @@ import cs.eng1.piazzapanic.food.FoodTextureManager;
 
 public class Potato extends Ingredient {
 
-    protected boolean halfCooked = false;
+  protected boolean halfCooked = false;
 
-    public Potato(FoodTextureManager textureManager) {
-        super("potato", textureManager);
-    }
+  public Potato(FoodTextureManager textureManager) {
+    super("potato", textureManager);
+  }
 
-    public void setHalfCooked() {
-        halfCooked = true;
-    }
+  public void setHalfCooked() {
+    halfCooked = true;
+  }
 
-    public boolean getIsHalfCooked() {
-        return halfCooked;
-    }
+  public boolean getIsHalfCooked() {
+    return halfCooked;
+  }
 
-    /**
-     * Get the texture based on whether the patty has been cooked.
-     *
-     * @return the texture to display.
-     */
-    @Override
-    public Texture getTexture() {
-        String name = getType() + "_";
-        if (isCooked) {
-            name += "cooked";
-        } else if (isBurned) {
-            name += "burned";
-        } else {
-            name += "raw";
-        }
-        return textureManager.getTexture(name);
+  /**
+   * Get the texture based on whether the patty has been cooked.
+   *
+   * @return the texture to display.
+   */
+  @Override
+  public Texture getTexture() {
+    String name = getType() + "_";
+    if (isCooked) {
+      name += "cooked";
+    } else if (isBurned) {
+      name += "burned";
+    } else {
+      name += "raw";
     }
+    return textureManager.getTexture(name);
+  }
 }

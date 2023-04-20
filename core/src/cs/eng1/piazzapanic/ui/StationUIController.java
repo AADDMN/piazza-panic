@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import cs.eng1.piazzapanic.PiazzaPanicGame;
 import cs.eng1.piazzapanic.stations.Station;
 import cs.eng1.piazzapanic.stations.StationAction;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,7 +64,6 @@ public class StationUIController {
     }
   }
 
-
   /**
    * Display a progress bar for a station. If the station is not one that this class knows, then it
    * will initialize the UI for it and then show the actions.
@@ -87,7 +85,7 @@ public class StationUIController {
    * will initialize the UI for it and then show the actions.
    *
    * @param station The station for which the progress should be updated.
-   * @param value   The value to be shown on the progress bar.
+   * @param value The value to be shown on the progress bar.
    */
   public void updateProgressValue(Station station, float value) {
     StationActionUI buttons = stationActionUI.get(station.getId());
