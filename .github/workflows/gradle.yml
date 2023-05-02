@@ -37,7 +37,7 @@ jobs:
       with:
         name: piazza-panic
         path: desktop/build/libs/desktop-1.0.jar
-    - name: Build with Gradle
+    - name: Build Check Style
       uses: gradle/gradle-build-action@3fbe033aaae657f011f88f29be9e65ed26bd29ef
       with:
         arguments: build check
